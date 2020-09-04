@@ -8,22 +8,21 @@
 #include "config.hpp"
 #include <sstream>
 
-namespace timer{
+namespace timer
+{
     void printLocalTime();
-    namespace watchdog{
+    namespace watchdog
+    {
         void feed();
         void set();
-    }
-    namespace deepsleep{
+    } // namespace watchdog
+    namespace deepsleep
+    {
         void updateBootCount();
         int getBootCount();
         void start();
         void printBootCount();
-    }
-    namespace wifi{
-        bool isWifiNeeded();
-        void updateWifiRequirements();        
-    }
-}
+    } // namespace deepsleep
+} // namespace timer
 
 #endif

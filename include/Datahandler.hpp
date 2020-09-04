@@ -10,29 +10,23 @@
 #include <iomanip>
 #include <sstream>
 
-class Datahandler{
-  private:
-    std::string data;
-    uint8_t dataLength {0};
-    std::string macAddress;
-    time_t epoch;
-    std::string storeFileName;
-    Measurement measurement;
-    std::string storageData;
-    std::string compressedStorageData;
-    void prepareStorage();
+class Datahandler
+{
+private:
+  std::string data;
+  uint8_t dataLength{0};
+  std::string macAddress;
+  time_t epoch;
+  Measurement measurement;
 
-  public:
-    Datahandler(std::string dataIn, std::string macAddressIn);
-    ~Datahandler();
-    void printData();
-    void buildMeasurement();
-    void writeStorage();
-    void setTime();
-    void setTime(time_t epochIn);
-    void writeInflux();
-    void sendMqtt();
-    std::string toString();
+public:
+  Datahandler(std::string dataIn, std::string macAddressIn);
+  ~Datahandler();
+  void buildMeasurement();
+  void setTime();
+  void setTime(time_t epochIn);
+  void sendMqtt();
+  std::string toString();
 };
 
 #endif

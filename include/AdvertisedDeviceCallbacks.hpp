@@ -6,14 +6,17 @@
 #include <BLEDevice.h>
 #include "config.hpp"
 #include "Datahandler.hpp"
+#include <set>
 #include <sstream>
 #include <iomanip>
 #include <vector>
 
-class AdvertisedDeviceCallbacks: public BLEAdvertisedDeviceCallbacks{
+class AdvertisedDeviceCallbacks : public BLEAdvertisedDeviceCallbacks
+{
 private:
-  int numberOfWhiteListedResults {0};
+  std::set<std::string> observedMacAddresses{};
   std::string buildMac(BLEAddress bleAddress);
+
 public:
   void onResult(BLEAdvertisedDevice advertisedDevice);
 };

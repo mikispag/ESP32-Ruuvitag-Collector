@@ -3,33 +3,19 @@
 #include <Arduino.h>
 #include "config.hpp"
 #include "AdvertisedDeviceCallbacks.hpp"
-#include "storage.hpp"
 #include "network.hpp"
-#include "menu.hpp"
 #include "timer.hpp"
 
-void setup() {
+void setup()
+{
   Serial.begin(115200);
   timer::watchdog::set();
   timer::watchdog::feed();
   timer::deepsleep::printBootCount();
 
-  config::setValues();
-
-  if(timer::wifi::isWifiNeeded()){
-    network::wifi::begin();
-    network::ntp::update();
-  }
-
+  network::wifi::begin();
+  network::ntp::update();
   timer::printLocalTime();
-
-  network::influx::begin();
-  storage::begin();
-
-  menu::menu();  
-  if(storage::spif::getFreeBytes()<8192){
-    storage::spif::deleteOldestFile();
-  }
   network::mqtt::begin();
 
   BLEDevice::init("");
@@ -38,11 +24,10 @@ void setup() {
   global::pBLEScan->setActiveScan(false);
   BLEScanResults foundDevices = global::pBLEScan->start(global::BLEscanTime);
 
-  storage::end();
-  timer::wifi::updateWifiRequirements();
   timer::deepsleep::updateBootCount();
   timer::deepsleep::start();
 }
 
-void loop() {
+void loop()
+{
 }

@@ -6,26 +6,25 @@
 #include <Arduino.h>
 #include <WiFi.h>
 #include "config.hpp"
-#include "Influx.hpp"
 #include "PubSubClient.h"
 #include <sstream>
 
-namespace network {
-    namespace wifi{
+namespace network
+{
+    namespace wifi
+    {
         void begin();
     }
-    namespace ntp{
+    namespace ntp
+    {
         void update();
     }
-    namespace influx{
+    namespace mqtt
+    {
         void begin();
-        bool write(std::string dataIn);
-    }
-    namespace mqtt{
-        void begin();
-        void publish(std::string topic,std::string payload);
+        void publish(std::string topic, std::string payload);
         void publishDiscovery(std::string mac);
-    }
-}
+    } // namespace mqtt
+} // namespace network
 
 #endif
