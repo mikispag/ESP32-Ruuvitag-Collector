@@ -67,6 +67,7 @@ namespace network
                 stream << macAddress.substr(6, 2) << macAddress.substr(9, 2);
                 stream << macAddress.substr(12, 2) << macAddress.substr(15, 2);
                 client.setServer(config::mqttServerIP.c_str(), config::mqttServerPort);
+                client.setBufferSize(512);
                 client.connect(stream.str().c_str(), config::mqttServerUsername.c_str(), config::mqttServerPassword.c_str());
             }
         }
@@ -75,7 +76,9 @@ namespace network
         {
             if (WiFi.isConnected() && config::mqttServerIP != std::string())
             {
-                client.publish(topic.c_str(), payload.c_str());
+                if (!client.publish(topic.c_str(), payload.c_str())) {
+                    Serial.printf("Error while publishinq MQTT message on %s: %s.\n", topic.c_str(), payload.c_str());
+                }
             }
         }
 
@@ -94,7 +97,7 @@ namespace network
 
                 mqttDiscovery.push_back(MqttDiscovery{"pressure", "hPa", "|float|round(1)"});
                 mqttDiscovery.push_back(MqttDiscovery{"humidity", "%", "|float|round(1)"});
-                mqttDiscovery.push_back(MqttDiscovery{"temperature", "°C", "|float|round(1)"});
+                mqttDiscovery.push_back(MqttDiscovery{"temperature", "°C", "|float|round(2)"});
                 mqttDiscovery.push_back(MqttDiscovery{"battery", "V", "|float|round(2)"});
 
                 for (auto m : mqttDiscovery)
@@ -122,7 +125,8 @@ namespace network
                     payload = stream.str();
                     stream.str(std::string());
                     stream.clear();
-                    client.publish(topic.c_str(), payload.c_str());
+
+                    publish(topic, payload);
                 }
             }
         }
