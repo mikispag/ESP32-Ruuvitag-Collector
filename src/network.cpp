@@ -38,16 +38,17 @@ namespace network
     {
         void update()
         {
-            if (WiFi.isConnected())
+            if (!WiFi.isConnected())
             {
-                time_t timeNow;
-                Serial.print("NTP update starting... ");
-
-                configTime(0, 0, config::ntpServerIP.c_str());
-                delay(500);
-                Serial.println("NTP update completed.");
-                time(&timeNow);
+                wifi::begin();
             }
+            time_t timeNow;
+            Serial.print("NTP update starting... ");
+
+            configTime(0, 0, config::ntpServerIP.c_str());
+            delay(500);
+            Serial.println("NTP update completed.");
+            time(&timeNow);
         }
     } // namespace ntp
     namespace mqtt
@@ -57,7 +58,11 @@ namespace network
 
         void begin()
         {
-            if (WiFi.isConnected() && config::mqttServerIP != std::string())
+            if (!WiFi.isConnected())
+            {
+                wifi::begin();
+            }
+            if (config::mqttServerIP != std::string())
             {
                 std::string macAddress = WiFi.macAddress().c_str();
                 std::string id;
@@ -74,9 +79,14 @@ namespace network
 
         void publish(std::string topic, std::string payload)
         {
-            if (WiFi.isConnected() && config::mqttServerIP != std::string())
+            if (!WiFi.isConnected())
             {
-                if (!client.publish(topic.c_str(), payload.c_str())) {
+                wifi::begin();
+            }
+            if (config::mqttServerIP != std::string())
+            {
+                if (!client.publish(topic.c_str(), payload.c_str()))
+                {
                     Serial.printf("Error while publishinq MQTT message on %s: %s.\n", topic.c_str(), payload.c_str());
                 }
             }
@@ -84,7 +94,11 @@ namespace network
 
         void publishDiscovery(std::string mac)
         {
-            if (WiFi.isConnected() && config::mqttServerIP != std::string() && config::mqttHomeAssistantDiscoveryTopic != std::string())
+            if (!WiFi.isConnected())
+            {
+                wifi::begin();
+            }
+            if (config::mqttServerIP != std::string() && config::mqttHomeAssistantDiscoveryTopic != std::string())
             {
                 struct MqttDiscovery
                 {
