@@ -6,12 +6,26 @@
 #include "network.hpp"
 #include "timer.hpp"
 
+void print_reset_menu() {
+  Serial.println("You have 3 seconds to press 'r' to reset...");
+  delay(3000);
+  if (Serial.available()) {
+    char c = Serial.read();
+    if (c == 'r') {
+      Serial.println("Reset request received, restarting...");
+      ESP.restart();
+    }
+  }
+}
+
 void setup()
 {
   Serial.begin(115200);
   timer::watchdog::set();
   timer::watchdog::feed();
   timer::deepsleep::printBootCount();
+
+  print_reset_menu();
 
   network::wifi::begin();
   network::ntp::update();

@@ -34,7 +34,7 @@ namespace timer
         void IRAM_ATTR resetModule()
         {
             Serial.println("Reset due to watchdog!\n");
-            esp_restart();
+            ESP.restart();
         }
         void feed()
         {

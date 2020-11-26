@@ -5,9 +5,9 @@
 namespace config
 {
     // Wifi access point name
-    const std::string wiFiSSID = "EDIT_ME";
+    const std::string wiFiSSID = "MikiGuest";
     // Wifi password
-    const std::string wiFiPassword = "EDIT_ME";
+    const std::string wiFiPassword = "Pmsvnlcdpmsvnled!";
     // NTP server, use IP address instead of name
     const std::string ntpServerIP = "129.6.15.28";
 
@@ -16,7 +16,7 @@ namespace config
     // Example: {} empty list, everything is scanned. Start with an empty list
     // and then populate it once you know the values. The system works more
     // efficiently with a whitelist as BLUE scan is stopped once list is fulfilled.
-    std::set<std::string> macWhiteList = {"D96BF9D2116A", "C2CA7F7D07F5"};
+    std::set<std::string> macWhiteList = {"F96703F10905", "C58A82F57C1C", "E62BA6EEADBA"};
 
     // MQTT configuration
     // MQTT server a.k.a broker IP address

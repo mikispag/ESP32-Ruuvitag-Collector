@@ -19,6 +19,8 @@ namespace network
                 wifiTimeout++;
                 if (wifiTimeout > 30)
                 {
+                    // Soft reset.
+                    ESP.restart();
                     break;
                 }
             }
